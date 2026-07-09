@@ -1,0 +1,1 @@
+Este diretório se destina a reunir tudo relacionado à configuração do projeto.
