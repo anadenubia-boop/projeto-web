@@ -1,0 +1,17 @@
+{
+    "name": "ana/fds-app",
+    "description": "Um e-commerce de floricultura",
+    "require": {
+        "twig/twig": "^3.28"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ana\\FdsApp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ana Denubia e Erik Marques"
+        }
+    ]
+}
