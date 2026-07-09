@@ -1,0 +1,1 @@
+reune tudo relacionado ao banco de dados. Como Migrations
