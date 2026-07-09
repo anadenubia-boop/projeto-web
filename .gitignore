@@ -1,0 +1,10 @@
+/storage/
+/vendor/
+.vscode/
+
+/static/
+templates/*.html
+
+# arquivos de configuração
+/config/database.php
+git 
