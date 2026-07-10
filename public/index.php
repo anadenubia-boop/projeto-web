@@ -1,20 +1,21 @@
 <?php
+
 declare(strict_types=1);
 
-require_once __DIR__ . "/../vendor/autoload.php";
+require_once __DIR__ . '/../vendor/autoload.php';
 
+use Ana\FdsApp\Http\Request;
+use Ana\FdsApp\Http\Router;
+use Ana\FdsApp\Support\Config;
 
-use Ana\FdsApp\Controller\HomeController;
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
+Config::load(__DIR__ . '/../config/app.php');
 
-$loader = new FilesystemLoader(__DIR__ . '/../templates');
-$twig = new Environment($loader);
+$router = new Router();
 
-$controller = new HomeController();
+require_once __DIR__ . '/../routes/web.php';
 
-echo $twig->render(
-    'home.html.twig',
-    $controller -> index()
-);
-?>
+$request = new Request();
+
+$response = $router->dispatch($request);
+
+$response->send();
