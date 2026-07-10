@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace Ana\FdsApp\Controller;
 
-final class HomeController
+use Ana\FdsApp\Http\Request;
+use Ana\FdsApp\Http\Response;
+
+final class HomeController extends AbstractController
 {
-    public function index(): array
+    public function index(Request $request): Response
     {
-        return [
-            'titulo' => 'Olá, Mundo!',
-            'mensagem' => 'Bem-vinda ao projeto FDS App.',
-        ];
+        return $this->render(
+            'home/index.html.twig',
+            [
+                'titulo' => 'Página Inicial'
+            ]
+        );
     }
 }
