@@ -1,0 +1,39 @@
+{% extends "layouts/app.html.twig" %}
+
+{% block content %}
+
+<h2>Catálogo</h2>
+
+{% if products is empty %}
+
+<p>Nenhum produto encontrado.</p>
+
+{% else %}
+
+<ul>
+
+{% for product in products %}
+
+    <li>
+
+        <strong>{{ product.name() }}</strong>
+
+        <br>
+
+        {{ product.description() }}
+
+        <br>
+
+        R$ {{ product.price() }}
+
+    </li>
+
+    <br>
+
+{% endfor %}
+
+</ul>
+
+{% endif %}
+
+{% endblock %}
