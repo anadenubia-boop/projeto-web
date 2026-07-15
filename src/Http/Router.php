@@ -9,40 +9,56 @@ use RuntimeException;
 final class Router
 {
     /**
-     * @var array<string, array<string, array{0: class-string, 1: string}>>
+     * @var array Route[]
      */
     private array $routes = [];
 
-    public function get(string $uri, array $action): void
+    public function get(string $path, array $action): void
     {
-        $this->addRoute('GET', $uri, $action);
+        $this->routes[] = new Route(
+            'GET',
+            $path,
+            $action,
+        );
     }
 
-    public function post(string $uri, array $action): void
+    public function post(string $path, array $action): void
     {
-        $this->addRoute('POST', $uri, $action);
-    }
-
-    private function addRoute(string $method, string $uri, array $action): void
-    {
-        $this->routes[$method][$uri] = $action;
+        $this->routes[] = new Route(
+            'POST',
+            $path,
+            $action,
+        );
     }
 
     public function dispatch(Request $request): Response
     {
-        $method = $request->method();
-        $uri = $request->uri();
+        foreach ($this->routes as $route) {
 
-        if (! isset($this->routes[$method][$uri])) {
-            throw new RuntimeException(
-                sprintf('Rota "%s %s" não encontrada.', $method, $uri)
+            if (! $route->matches(
+                $request->method(),
+                $request->uri()
+            )) {
+                continue;
+            }
+
+            [$controllerClass, $method] = $route->action();
+
+            // TODO: Substituir pela resolução via Container de Dependências.
+            $controller = new $controllerClass();
+
+            return $controller->$method(
+                $request,
+                ...$route->extractParameters()
             );
         }
 
-        [$controller, $action] = $this->routes[$method][$uri];
-
-        $instance = new $controller();
-
-        return $instance->$action($request);
+        throw new RuntimeException(
+            sprintf(
+                'Rota "%s %s" não encontrada.',
+                $request->method(),
+                $request->uri()
+            )
+        );
     }
 }
