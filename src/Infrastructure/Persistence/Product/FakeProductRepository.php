@@ -14,6 +14,26 @@ final class FakeProductRepository implements ProductRepositoryInterface
      */
     public function findAll(): array
     {
+        return $this->products();
+    }
+
+    public function findById(int $id): ?Product
+    {
+        foreach ($this->products() as $product) {
+
+            if ($product->id() === $id) {
+                return $product;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @return Product[]
+     */
+    private function products(): array
+    {
         return [
 
             new Product(
@@ -21,7 +41,7 @@ final class FakeProductRepository implements ProductRepositoryInterface
                 'Rosa Vermelha',
                 'Buquê com 12 rosas vermelhas.',
                 89.90,
-                'rosa.jpg'
+                'rosa-vermelha.jpg'
             ),
 
             new Product(
@@ -41,18 +61,5 @@ final class FakeProductRepository implements ProductRepositoryInterface
             ),
 
         ];
-    }
-
-    public function findById(int $id): ?Product
-    {
-        foreach ($this->findAll() as $product) {
-
-            if ($product->id() === $id) {
-                return $product;
-            }
-
-        }
-
-        return null;
     }
 }
