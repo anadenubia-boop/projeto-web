@@ -39,4 +39,19 @@ final class Product
     {
         return $this->image;
     }
+
+    public function formattedPrice(): string
+    {
+        return number_format(
+            $this->price,
+            2,
+            ',',
+            '.'
+        );
+    }
+
+    public function imagePath(): string
+    {
+        return '/assets/images/products/' . $this->image;
+    }
 }
