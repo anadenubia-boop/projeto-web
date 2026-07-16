@@ -1,22 +1,24 @@
 <?php
 
-use Ana\FdsApp\Container\Container;
+declare(strict_types=1);
+
+use Ana\FdsApp\Container\ContainerInterface;
 use Ana\FdsApp\Domain\Product\Repository\ProductRepositoryInterface;
 use Ana\FdsApp\Domain\Product\Service\ProductService;
 use Ana\FdsApp\Infrastructure\Persistence\Product\FakeProductRepository;
 
-return static function (Container $container): void {
+/** @var ContainerInterface $container */
 
-    $container->set(
-        ProductRepositoryInterface::class,
-        fn () => new FakeProductRepository()
-    );
+$container->register(
+    ProductRepositoryInterface::class,
 
-    $container->set(
-        ProductService::class,
-        fn (Container $c) => new ProductService(
-            $c->get(ProductRepositoryInterface::class)
-        )
-    );
+    fn () => new FakeProductRepository()
+);
 
-};
+$container->register(
+    ProductService::class,
+
+    fn (ContainerInterface $c) => new ProductService(
+        $c->get(ProductRepositoryInterface::class)
+    )
+);

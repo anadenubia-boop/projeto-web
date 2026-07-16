@@ -18,7 +18,7 @@ final class Container implements ContainerInterface
      */
     private array $instances = [];
 
-    public function set(
+    public function register(
         string $id,
         callable $factory
     ): void {
