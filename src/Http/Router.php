@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ana\FdsApp\Http;
 
+use Ana\FdsApp\Container\ContainerInterface;
 use RuntimeException;
 
 final class Router
@@ -12,6 +13,13 @@ final class Router
      * @var array Route[]
      */
     private array $routes = [];
+
+    public function __construct(
+        private readonly ContainerInterface $container
+    )
+    {
+        
+    }
 
     public function get(string $path, array $action): void
     {
@@ -45,7 +53,9 @@ final class Router
             [$controllerClass, $method] = $route->action();
 
             // TODO: Substituir pela resolução via Container de Dependências.
-            $controller = new $controllerClass();
+            $controller = $this->container->get(
+                $controllerClass
+            );
 
             return $controller->$method(
                 $request,
